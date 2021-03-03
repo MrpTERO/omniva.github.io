@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Omniva postpunktid</title>
-    <!--Include Bootstrap CSS-->
+    <title>Read XML Data Using jQuery Ajax and Load it in HTML table</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-      <!--Include jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <style>
         
@@ -14,17 +12,19 @@
 <body>
 
     <p>
-      Click button to show data
+      Clict to show data
     </p>
 
-    <input type="button" value="Show data" id="btn" />
+    <input type="button" value="Прочитать XML" id="btn" />
     <table class="table table-condensed table-hovered table-striped">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Address</th>
-          <th>working hours</th>
+          <th>Название пункта</th>
+          <th>Тип</th>
+          <th>Округ</th>
+          <th>Уезд или Город</th>
+          <th>Адрес</th>
+          <th>Время работы</th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -36,20 +36,20 @@
 
 <script>
     $(document).ready(function() {
-        
+        //jQuery on button click Call
         $('#btn').click(function () {
         
-            $('#tableBody').empty();      
-           
+            $('#tableBody').empty();       // Clear the table body.
+            //ajax call to load XML and parse it
             $.ajax({
                 type: 'GET',
-                url: 'locations.xml',          
+                url: 'locations.xml',           // The file path.
                 dataType: 'xml',    
                 success: function(xml) {
-                   
+                   //find all book tags, loop them and append to table body
                     $(xml).find('LOCATION').each(function() {
                         
-                       
+                        // Append new data to the tbody element.
                         $('#tableBody').append(
                             '<tr>' +
                                 '<td>' +
@@ -57,10 +57,16 @@
                                 '<td>' +
                                     $(this).find('TYPE').text() + '</td> ' +
                                 '<td>' +
+                                    $(this).find('A1_NAME').text() + '</td> ' +
+                                '<td>' +
                                     $(this).find('A2_NAME').text() + '</td> ' +
-                                    '<td>' +
+                                '<td>' +
+                                    $(this).find('A3_NAME').text() + ',' +
+                                    $(this).find('A5_NAME').text() + '-' +
+                                    $(this).find('A7_NAME').text() +      
+                                '</td> ' +
+                                 '<td>' +
                                     $(this).find('SERVICE_HOURS').text() + '</td> ' +
-                                    '<td>' +
                             '</tr>');
                     });
                 }
