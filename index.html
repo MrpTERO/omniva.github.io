@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Omniva postpunktid</title>
+    <!--Include Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+      <!--Include jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <style>
+        
+    </style>
+</head>
+
+<body>
+
+    <p>
+      Click button to show data
+    </p>
+
+    <input type="button" value="Show data" id="btn" />
+    <table class="table table-condensed table-hovered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Address</th>
+          <th>working hours</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        
+      </tbody>
+    
+    </table>
+</body>
+
+<script>
+    $(document).ready(function() {
+        
+        $('#btn').click(function () {
+        
+            $('#tableBody').empty();      
+           
+            $.ajax({
+                type: 'GET',
+                src: 'locations.xml',          
+                dataType: 'xml',    
+                success: function(xml) {
+                   
+                    $(xml).find('LOCATION').each(function() {
+                        
+                       
+                        $('#tableBody').append(
+                            '<tr>' +
+                                '<td>' +
+                                    $(this).find('NAME').text() + '</td> ' +
+                                '<td>' +
+                                    $(this).find('TYPE').text() + '</td> ' +
+                                '<td>' +
+                                    $(this).find('A2_NAME').text() + '</td> ' +
+                                    '<td>' +
+                                    $(this).find('SERVICE_HOURS').text() + '</td> ' +
+                                    '<td>' +
+                            '</tr>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+</html>
